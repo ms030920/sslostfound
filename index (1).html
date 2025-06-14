@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>replit</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  
+  <script src="script.js"></script>
+</body>
+
+</html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>성신여대 분실물 찾기 서비스</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #764ba2;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .auth-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .input-group input, .input-group select, .input-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus, .input-group select:focus, .input-group textarea:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #333;
+        }
+
+        .nav-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 5px;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            background: transparent;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .category-filter {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 8px 16px;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .post-list {
+            margin-top: 20px;
+        }
+
+        .post-item {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .post-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .post-item.found {
+            opacity: 0.7;
+            border-left: 5px solid #28a745;
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .post-category {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .post-status {
+            background: #28a745;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .post-content {
+            margin-bottom: 15px;
+        }
+
+        .post-image {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+
+        .post-meta {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .comments-section {
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+
+        .comment-item {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 3px solid #667eea;
+        }
+
+        .comment-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .comment-form input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+        }
+
+        .error-message {
+            color: #dc3545;
+            background: #f8d7da;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .success-message {
+            color: #155724;
+            background: #d4edda;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .user-info {
+            text-align: right;
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 15px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .nav-tabs {
+                flex-direction: column;
+            }
+
+            .category-filter {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 성신여대 분실물 찾기</h1>
+            <p>우리 학교 분실물을 함께 찾아요!</p>
+        </div>
+
+        <!-- 로그인 섹션 -->
+        <div id="authSection" class="auth-section">
+            <h2>학교 이메일로 로그인</h2>
+            <div class="input-group">
+                <label for="email">성신여대 이메일</label>
+                <input type="email" id="email" placeholder="example@sungshin.ac.kr">
+            </div>
+            <div class="input-group">
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" placeholder="비밀번호를 입력하세요">
+            </div>
+            <button class="btn" onclick="login()">로그인</button>
+            <div id="authError" class="error-message hidden"></div>
+        </div>
+
+        <!-- 메인 콘텐츠 -->
+        <div id="mainContent" class="main-content hidden">
+            <div class="user-info">
+                <span id="userEmail"></span>님 환영합니다!
+                <button class="logout-btn" onclick="logout()">로그아웃</button>
+            </div>
+
+            <!-- 네비게이션 탭 -->
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="showTab('list')">게시글 보기</button>
+                <button class="nav-tab" onclick="showTab('lost')">분실물 찾기</button>
+                <button class="nav-tab" onclick="showTab('found')">분실물 올리기</button>
+            </div>
+
+            <!-- 게시글 목록 -->
+            <div id="listTab" class="tab-content">
+                <h3>분실물 게시판</h3>
+
+                <!-- 카테고리 필터 -->
+                <div class="category-filter">
+                    <button class="category-btn active" onclick="filterCategory('all')">전체</button>
+                    <button class="category-btn" onclick="filterCategory('전자기기')">전자기기</button>
+                    <button class="category-btn" onclick="filterCategory('지갑')">지갑</button>
+                    <button class="category-btn" onclick="filterCategory('기타')">기타</button>
+                </div>
+
+                <div id="postList" class="post-list">
+                    <!-- 게시글들이 여기에 표시됩니다 -->
+                </div>
+            </div>
+
+            <!-- 분실물 찾기 게시글 작성 -->
+            <div id="lostTab" class="tab-content hidden">
+                <h3>분실물 찾기 게시글 작성</h3>
+                <div class="input-group">
+                    <label for="lostCategory">카테고리</label>
+                    <select id="lostCategory">
+                        <option value="전자기기">전자기기</option>
+                        <option value="지갑">지갑</option>
+                        <option value="기타">기타</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="lostTitle">제목</label>
+                    <input type="text" id="lostTitle" placeholder="분실물에 대해 간단히 설명해주세요">
+                </div>
+                <div class="input-group">
+                    <label for="lostDescription">상세 설명</label>
+                    <textarea id="lostDescription" rows="4" placeholder="분실물의 특징, 잃어버린 장소 등을 자세히 적어주세요"></textarea>
+                </div>
+                <button class="btn" onclick="submitLostPost()">게시글 등록</button>
+                <div id="lostMessage" class="hidden"></div>
+            </div>
+
+            <!-- 분실물 발견 게시글 작성 -->
+            <div id="foundTab" class="tab-content hidden">
+                <h3>분실물 발견 게시글 작성</h3>
+                <div class="input-group">
+                    <label for="foundCategory">카테고리</label>
+                    <select id="foundCategory">
+                        <option value="전자기기">전자기기</option>
+                        <option value="지갑">지갑</option>
+                        <option value="기타">기타</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="foundTitle">제목</label>
+                    <input type="text" id="foundTitle" placeholder="발견한 물건에 대해 간단히 설명해주세요">
+                </div>
+                <div class="input-group">
+                    <label for="foundDescription">상세 설명</label>
+                    <textarea id="foundDescription" rows="4" placeholder="발견한 물건의 특징, 발견 장소 등을 자세히 적어주세요"></textarea>
+                </div>
+                <div class="input-group">
+                    <label for="foundImage">사진 업로드</label>
+                    <input type="file" id="foundImage" accept="image/*">
+                </div>
+                <button class="btn" onclick="submitFoundPost()">게시글 등록</button>
+                <div id="foundMessage" class="hidden"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 데이터 저장용 객체
+        let appData = {
+            currentUser: null,
+            posts: [],
+            comments: {},
+            nextPostId: 1
+        };
+
+        // 로컬 스토리지에서 데이터 로드
+        function loadData() {
+            const savedData = localStorage.getItem('sungshinLostFound');
+            if (savedData) {
+                appData = JSON.parse(savedData);
+            }
+        }
+
+        // 로컬 스토리지에 데이터 저장
+        function saveData() {
+            localStorage.setItem('sungshinLostFound', JSON.stringify(appData));
+        }
+
+        // 페이지 로드 시 데이터 불러오기
+        window.onload = function() {
+            loadData();
+            if (appData.currentUser) {
+                showMainContent();
+            }
+            displayPosts();
+        };
+
+        // 로그인 기능
+        function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('authError');
+
+            // 이메일 형식 검증
+            if (!email.endsWith('@sungshin.ac.kr')) {
+                showError(errorDiv, '성신여대 이메일(@sungshin.ac.kr)만 사용 가능합니다.');
+                return;
+            }
+
+            if (!password) {
+                showError(errorDiv, '비밀번호를 입력해주세요.');
+                return;
+            }
+
+            // 로그인 성공
+            appData.currentUser = email;
+            saveData();
+            showMainContent();
+        }
+
+        // 메인 콘텐츠 표시
+        function showMainContent() {
+            document.getElementById('authSection').classList.add('hidden');
+            document.getElementById('mainContent').classList.remove('hidden');
+            document.getElementById('userEmail').textContent = appData.currentUser;
+        }
+
+        // 로그아웃
+        function logout() {
+            appData.currentUser = null;
+            saveData();
+            document.getElementById('authSection').classList.remove('hidden');
+            document.getElementById('mainContent').classList.add('hidden');
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        // 탭 전환
+        function showTab(tabName) {
+            // 모든 탭 숨기기
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+
+            // 모든 탭 버튼 비활성화
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // 선택된 탭 표시
+            document.getElementById(tabName + 'Tab').classList.remove('hidden');
+            event.target.classList.add('active');
+        }
+
+        // 분실물 찾기 게시글 등록
+        function submitLostPost() {
+            const category = document.getElementById('lostCategory').value;
+            const title = document.getElementById('lostTitle').value;
+            const description = document.getElementById('lostDescription').value;
+            const messageDiv = document.getElementById('lostMessage');
+
+            if (!title || !description) {
+                showError(messageDiv, '제목과 설명을 모두 입력해주세요.');
+                return;
+            }
+
+            const post = {
+                id: appData.nextPostId++,
+                type: 'lost',
+                category: category,
+                title: title,
+                description: description,
+                author: appData.currentUser,
+                timestamp: new Date().toLocaleString(),
+                found: false
+            };
+
+            appData.posts.unshift(post);
+            appData.comments[post.id] = [];
+            saveData();
+
+            showSuccess(messageDiv, '게시글이 등록되었습니다!');
+            clearForm(['lostCategory', 'lostTitle', 'lostDescription']);
+            displayPosts();
+        }
+
+        // 분실물 발견 게시글 등록
+        function submitFoundPost() {
+            const category = document.getElementById('foundCategory').value;
+            const title = document.getElementById('foundTitle').value;
+            const description = document.getElementById('foundDescription').value;
+            const imageFile = document.getElementById('foundImage').files[0];
+            const messageDiv = document.getElementById('foundMessage');
+
+            if (!title || !description) {
+                showError(messageDiv, '제목과 설명을 모두 입력해주세요.');
+                return;
+            }
+
+            const post = {
+                id: appData.nextPostId++,
+                type: 'found',
+                category: category,
+                title: title,
+                description: description,
+                author: appData.currentUser,
+                timestamp: new Date().toLocaleString(),
+                found: false
+            };
+
+            // 이미지 처리
+            if (imageFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    post.image = e.target.result;
+                    appData.posts.unshift(post);
+                    appData.comments[post.id] = [];
+                    saveData();
+                    displayPosts();
+                };
+                reader.readAsDataURL(imageFile);
+            } else {
+                appData.posts.unshift(post);
+                appData.comments[post.id] = [];
+                saveData();
+                displayPosts();
+            }
+
+            showSuccess(messageDiv, '게시글이 등록되었습니다!');
+            clearForm(['foundCategory', 'foundTitle', 'foundDescription', 'foundImage']);
+        }
+
+        // 게시글 표시
+        function displayPosts(filterCategory = 'all') {
+            const postList = document.getElementById('postList');
+            let filteredPosts = appData.posts;
+
+            if (filterCategory !== 'all') {
+                filteredPosts = appData.posts.filter(post => post.category === filterCategory);
+            }
+
+            if (filteredPosts.length === 0) {
+                postList.innerHTML = '<p style="text-align: center; color: #666; padding: 40px;">아직 게시글이 없습니다.</p>';
+                return;
+            }
+
+            postList.innerHTML = filteredPosts.map(post => `
+                <div class="post-item ${post.found ? 'found' : ''}" data-category="${post.category}">
+                    <div class="post-header">
+                        <div>
+                            <span class="post-category">${post.category}</span>
+                            ${post.found ? '<span class="post-status">찾음</span>' : ''}
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            ${!post.found ? `<button class="btn btn-secondary" onclick="markAsFound(${post.id})">찾았음 표시</button>` : ''}
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <h4>${post.title}</h4>
+                        <p>${post.description}</p>
+                        ${post.image ? `<img src="${post.image}" alt="첨부 이미지" class="post-image">` : ''}
+                    </div>
+                    <div class="post-meta">
+                        ${post.type === 'lost' ? '👤 분실물 찾기' : '🔍 분실물 발견'} | 작성자: ${post.author} | ${post.timestamp}
+                    </div>
+                    <div class="comments-section">
+                        <h5>댓글 (${appData.comments[post.id]?.length || 0}개)</h5>
+                        <div id="comments-${post.id}">
+                            ${(appData.comments[post.id] || []).map(comment => `
+                                <div class="comment-item">
+                                    <strong>${comment.author}:</strong> ${comment.text}
+                                    <small style="color: #666; margin-left: 10px;">${comment.timestamp}</small>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="comment-form">
+                            <input type="text" id="commentInput-${post.id}" placeholder="댓글을 입력하세요..." onkeypress="handleCommentKeyPress(event, ${post.id})">
+                            <button class="btn" onclick="addComment(${post.id})">댓글 작성</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 카테고리 필터
+        function filterCategory(category) {
+            // 필터 버튼 상태 업데이트
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            displayPosts(category);
+        }
+
+        // 댓글 추가
+        function addComment(postId) {
+            const commentInput = document.getElementById(`commentInput-${postId}`);
+            const commentText = commentInput.value.trim();
+
+            if (!commentText) {
+                alert('댓글 내용을 입력해주세요.');
+                return;
+            }
+
+            const comment = {
+                author: appData.currentUser,
+                text: commentText,
+                timestamp: new Date().toLocaleString()
+            };
+
+            if (!appData.comments[postId]) {
+                appData.comments[postId] = [];
+            }
+            appData.comments[postId].push(comment);
+            saveData();
+
+            commentInput.value = '';
+            displayPosts();
+        }
+
+        // 엔터키로 댓글 작성
+        function handleCommentKeyPress(event, postId) {
+            if (event.key === 'Enter') {
+                addComment(postId);
+            }
+        }
+
+        // 찾았음 표시
+        function markAsFound(postId) {
+            const post = appData.posts.find(p => p.id === postId);
+            if (post) {
+                post.found = true;
+                saveData();
+                displayPosts();
+            }
+        }
+
+        // 에러 메시지 표시
+        function showError(element, message) {
+            element.textContent = message;
+            element.classList.remove('hidden', 'success-message');
+            element.classList.add('error-message');
+        }
+
+        // 성공 메시지 표시
+        function showSuccess(element, message) {
+            element.textContent = message;
+            element.classList.remove('hidden', 'error-message');
+            element.classList.add('success-message');
+        }
+
+        // 폼 초기화
+        function clearForm(fieldIds) {
+            fieldIds.forEach(id => {
+                const element = document.getElementById(id);
+                if (element.type === 'file') {
+                    element.value = '';
+                } else {
+                    element.value = element.type === 'select-one' ? element.options[0].value : '';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
